@@ -6,6 +6,7 @@ import session from 'express-session';
 import passport from 'passport';
 import compression from 'express-compression';
 
+import routerLogger from './routes/endpoints/logger.js'
 import routerProducts from './routes/endpoints/products.js'
 import routerCart from './routes/endpoints/cart.js'
 import routerSession from './routes/endpoints/session.js'
@@ -15,6 +16,7 @@ import handlebars from 'express-handlebars';
 import __dirname from './utils/utils.js';
 import initializatePassport from './config/passportConfig.js';
 import errorHandler from './middlewares/errors/index.js'
+import { addLogger } from './utils/loggerCustom.js';
 
 
 import { Server } from 'socket.io';
@@ -31,6 +33,7 @@ const app = express();
 const uri ="mongodb+srv://outputlevel10:KnneXOY0gNm7WAjk@cardealer.mkbx3tp.mongodb.net/carDealer?retryWrites=true&w=majority"    //process.env.MONGO_URI
 mongoose.connect(uri)
 
+app.use(addLogger)
 app.use(compression({brotli: { enabled: true, zlib: {}}}))
 app.use(express.json());
 //app.use(bodyParser.json({strict:true}));
@@ -53,11 +56,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Use routers
+app.use('/api/loggertest', routerLogger); //Logger
 app.use('/api/products', routerProducts);
 app.use('/api/carts', routerCart);
 app.use('/api/sessions', routerSession);
 app.use('/api/tickets', routerTickets);
 app.use('/views', viewsRouter);
+
 
 app.use(errorHandler);
 //-------------Handlebars---------------////

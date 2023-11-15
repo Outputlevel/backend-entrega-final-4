@@ -13,7 +13,8 @@ router.get('/search',searchProducts);
 router.get('/:idVehicle', getProductById);
 
 //Agrega nuevo vehiculo
-router.post('/', adminAuth, addProduct);
+//router.post('/', adminAuth, addProduct);
+router.post('/', addProduct);
 
 //Actualiza vehiculo
 router.put('/:idVehicle', adminAuth, updateVehicle);

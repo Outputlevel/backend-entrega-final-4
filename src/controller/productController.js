@@ -94,7 +94,7 @@ export const getProductById =  async (req, res) => {
 };
 //Agrega nuevo vehiculo
 export const addProduct = async (req, res) => {
-    try {
+    try{
         const productData = {
            title: req.body.title,
            description: req.body.description ?? 'No description',
@@ -110,7 +110,7 @@ export const addProduct = async (req, res) => {
                 name: 'Product creation error',
                 cause: generateProductErrorInfo(productData),
                 message: 'Error trying to create Product',
-                code: 2
+                code: ErrorCodes.INVALID_TYPES_ERROR
             });
         }
         if(productData.code ==='No code'){
@@ -121,10 +121,10 @@ export const addProduct = async (req, res) => {
             response = new Response(code, "Product added", createProduct )
             return res.status(code).send(response);
         }
-    } catch (err) {
+    }catch(err) {
         console.error(err)
         return []
-    }  
+    }       
 };
 //Actualiza vehiculo
 export const updateVehicle = async (req, res) => {
