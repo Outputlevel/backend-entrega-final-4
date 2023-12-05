@@ -1,0 +1,44 @@
+paths:
+  /api/products/:
+    get:
+      summary: Gets all products
+      tags:
+        - Products
+      responses:
+        "201":
+          description: Products fetched from database
+        "500":
+          description: Server error. Database connection failed
+components:
+  schemas:
+    Product:
+      type: object
+      properties: 
+        _id:
+          type: ObjectId
+          description: MongoDB ID
+        title:
+          type: String
+          description: Vehicle name
+        description:
+          type: String
+          description: Vehicle description
+        price:
+          type: Number
+          description: Vehicle Price
+        category:
+          type: String
+          description: Category of vehicle
+        owner:
+          type: String
+          description: Owner of vehicle
+      example:
+        _id: 6507f1b39d0d417b0a25c486
+        title: Toyota Camry
+        description: en oferta
+        price: 43000
+        code: code3
+        category: sedan
+        thumbnails: null
+        stock: 5
+        owner: rix.admin@gmail.com

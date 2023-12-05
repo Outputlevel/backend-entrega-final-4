@@ -5,6 +5,8 @@ import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import passport from 'passport';
 import compression from 'express-compression';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
 
 import routerLogger from './routes/endpoints/logger.js'
 import routerProducts from './routes/endpoints/products.js'
@@ -22,6 +24,7 @@ import { addLogger } from './utils/loggerCustom.js';
 import { Server } from 'socket.io';
 import { Cart } from "./sevices/cartService.js";
 
+
 export const messages = [];
 export let testPush = [] //Prepara props para handlebars
 export let vehicleId 
@@ -33,12 +36,28 @@ const app = express();
 const uri ="mongodb+srv://outputlevel10:KnneXOY0gNm7WAjk@cardealer.mkbx3tp.mongodb.net/carDealer?retryWrites=true&w=majority"    //process.env.MONGO_URI
 mongoose.connect(uri)
 
+////Swagger//////
+const swaggerOptions = {
+    definition: {
+        openapi:'3.0.3',
+        info:{
+            title:'CarDealer',
+            description:'Best Car Dealer In Town'
+        }
+    },
+    apis:[`${__dirname}/../../docs/**/*.yaml`]
+
+}
+const specs = swaggerJSDoc(swaggerOptions)
+///Logger
 app.use(addLogger)
+//Compression
 app.use(compression({brotli: { enabled: true, zlib: {}}}))
+///Express Options
 app.use(express.json());
-//app.use(bodyParser.json({strict:true}));
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
+//Mongo Session
 app.use(session({
      store: MongoStore.create({
          mongoUrl: uri,
@@ -55,13 +74,14 @@ initializatePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Use routers
+//Routes
 app.use('/api/loggertest', routerLogger); //Logger
 app.use('/api/products', routerProducts);
 app.use('/api/carts', routerCart);
 app.use('/api/sessions', routerSession);
 app.use('/api/tickets', routerTickets);
 app.use('/views', viewsRouter);
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs)) //swagger route **See swagger options**
 
 
 app.use(errorHandler);
