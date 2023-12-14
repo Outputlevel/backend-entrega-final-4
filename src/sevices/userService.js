@@ -5,6 +5,15 @@ import {createHash, isValidPassword} from '../utils/functionsUtil.js';
 let userClass = new User()
 
 export class UserService {
+    async getUsers(){
+        try{
+            return await userClass.getUsers()
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    }
+
     async findUser(id) {
         try {
             return await userClass.findUser(id) 
@@ -43,6 +52,14 @@ export class UserService {
             
             throw new Error('Login failed');
 
+        } catch (error) {
+            throw new Error(error.message.replace(/"/g, "'"));
+        }
+    }
+
+    async deleteUser(id) {
+        try {
+            return await userClass.deleteUser(id)
         } catch (error) {
             throw new Error(error.message.replace(/"/g, "'"));
         }

@@ -20,8 +20,8 @@ router.post('/', addProduct);
 router.put('/:idVehicle', adminAuth, updateVehicle);
 
 //Elimina vehiculo por Id
-router.delete('/:idVehicle', adminAuth, deleteVehicleById);
-
+//router.delete('/:idVehicle', adminAuth, deleteVehicleById);
+router.delete('/:idVehicle',  deleteVehicleById);
 
 ///Realtime Products
 router.get('/realtimeProducts', realtimeProducts);

@@ -23,7 +23,8 @@ router.delete('/:cartId', deleteCart);
 router.post('/:cartId/product/:productId', userAuth, addToCart);
 
 //Delete product from cart
-router.delete('/:cartId/product/:productId', userAuth, deleteCartById);
+//router.delete('/:cartId/product/:productId', userAuth, deleteCartById);
+router.delete('/:cartId/product/:productId', deleteCartById);
 
 //update quantity 
 router.put('/:cartId/product/:productId', userAuth, updateCart);

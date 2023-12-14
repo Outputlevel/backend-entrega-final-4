@@ -12,6 +12,7 @@ import routerLogger from './routes/endpoints/logger.js'
 import routerProducts from './routes/endpoints/products.js'
 import routerCart from './routes/endpoints/cart.js'
 import routerSession from './routes/endpoints/session.js'
+import routerUsers from './routes/endpoints/users.js'
 import routerTickets from './routes/endpoints/tickets.js'
 import viewsRouter from './routes/views/views.js';
 import handlebars from 'express-handlebars';
@@ -79,6 +80,7 @@ app.use('/api/loggertest', routerLogger); //Logger
 app.use('/api/products', routerProducts);
 app.use('/api/carts', routerCart);
 app.use('/api/sessions', routerSession);
+app.use('/api/users', routerUsers);
 app.use('/api/tickets', routerTickets);
 app.use('/views', viewsRouter);
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs)) //swagger route **See swagger options**

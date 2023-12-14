@@ -130,9 +130,9 @@ export class Cart {
         }
     }
 
-   async updateCart(cartId, cart) {
+   async updateCart(cartId, data) {
          try {
-            return cartsModel.updateOne({_id:cartId}, cart)
+            return cartsModel.findByIdAndUpdate(cartId, data)
         } catch (err) {
             console.error(err)
             return []
@@ -157,10 +157,10 @@ export class Cart {
             return []
         }  
     }
-    //Elimina todos los productos
+    //Elimina todos los carritos
     async deleteAll() {
         const carts = await this.findCartProducts()
-        console.log("Products Deleted:", carts)
+        console.log("Carts Deleted:", carts)
         const newArr = []
         await fs.promises.writeFile(cartPath, JSON.stringify(newArr, null, "\t"))
 

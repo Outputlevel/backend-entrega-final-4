@@ -9,7 +9,7 @@ import { generateProductErrorInfo } from '../middlewares/errors/info.js'
 const data = new Product()
 let response = {}
 let arrProps = {}
-let code = 201
+let code = 200
 let results = {}
 
 //Gett all products
@@ -62,7 +62,6 @@ export const searchProducts =  async (req, res) => {
         }
         const vehicles = await data.searchProducts(itemParams)
         if(vehicles.length >= 1){
-            code = 201
             response = new Response(code, "Product Found", vehicles )
             return res.status(code).send(response);
         }
@@ -82,7 +81,6 @@ export const getProductById =  async (req, res) => {
         const idParam = req.params.idVehicle;
         const filteredById = await data.getProductById(idParam)
         if(filteredById){
-            code = 201
             response = new Response(code, "Product Found", filteredById )
             return res.status(code).send(response);
         }
@@ -95,6 +93,7 @@ export const getProductById =  async (req, res) => {
 //Agrega nuevo vehiculo
 export const addProduct = async (req, res) => {
     try{
+        console.log("11", req.session)
         const productData = {
            title: req.body.title,
            description: req.body.description ?? 'No description',
@@ -143,7 +142,6 @@ export const updateVehicle = async (req, res) => {
         }
         const updatedProduct = await data.updateProduct(getVehicle.id, productData)
             if(updatedProduct) {
-                code = 201
                 response = new Response(code, "success", updatedProduct )
                 return res.status(code).send(response);
             }
@@ -160,7 +158,6 @@ export const deleteVehicleById = async (req, res) => {
     try{
         const idParam = req.params.idVehicle;
         const deleteProduct = await data.deleteProductById(idParam)
-        code = 201
         response = new Response(code, "Product Deleted", deleteProduct )
         return res.status(code).send(response);
     } catch (err) {
@@ -173,7 +170,6 @@ export const realtimeProducts =  async (req, res) => {
     try {
         const limit = req.query.limit;
         const vehicles = await data.getProducts()
-        code = 200
         if (!limit) {
             response = new Response(code, "Products Found", vehicles )
             return res.status(code).send(response);

@@ -15,6 +15,10 @@ const vehiclesSchema = new mongoose.Schema({
     },
     category: String,
     status: Boolean,
+    owner: {
+        type: String,
+        default: 'admin'
+    },
     thumbnails: String,
     carts: {
         type: [

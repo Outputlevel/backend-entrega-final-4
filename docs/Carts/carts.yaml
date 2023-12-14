@@ -1,0 +1,61 @@
+paths:
+  /api/carts/:
+    get:
+      summary: Gets all carts
+      tags:
+        - Carts
+      responses:
+        "201":
+          description: Carts fetched from database
+        "500":
+          description: Server error. Database connection failed
+  /api/carts/{idVehicle}:
+    get:
+      summary: Gets vehicle by id
+      tags:
+        - carts
+      parameters:
+        - name: idVehicle
+          in: path
+          required: true
+          description: User ID
+          schema:
+            $type: String
+      responses:
+        "201":
+          description: Vehicle fetched from database
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/carts'
+        "500":
+          description: Server error. Database connection failed
+components:
+  schemas:
+    Cart:
+      type: object
+      properties: 
+        _id:
+          type: ObjectId
+          description: MongoDB ID
+        products:
+          type: array
+          description: Vehicle name
+      example:
+        _id: 6502398b65c42ccf972ce54b
+        products: [
+          {
+            "productId": "65081005e8ccd2bea10833ed",
+            "quantity": 4,
+            "_id": {
+              "$oid": "650985913c6323ffba166aca"
+            }
+          },
+          {
+            "productId": "6507f1b39d0d417b0a25c486",
+            "quantity": 2,
+            "_id": {
+              "$oid": "650985bd3c6323ffba166ae1"
+            }
+          }
+        ]

@@ -1,21 +1,21 @@
 paths:
-  /api/products/:
+  /api/users/:
     get:
-      summary: Gets all vehicles
+      summary: Gets all users
       tags:
-        - Products
+        - Users
       responses:
         "201":
-          description: Products fetched from database
+          description: Users fetched from database
         "500":
           description: Server error. Database connection failed
-  /api/products/{idVehicle}:
+  /api/users/{idUser}:
     get:
-      summary: Gets vehicle by id
+      summary: Gets user by id
       tags:
-        - Products
+        - Users
       parameters:
-        - name: idVehicle
+        - name: iduser
           in: path
           required: true
           description: User ID
@@ -23,11 +23,11 @@ paths:
             $type: String
       responses:
         "201":
-          description: Vehicle fetched from database
+          description: user fetched from database
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/Products'
+                $ref: '#components/schemas/Users'
         "500":
           description: Server error. Database connection failed
 components:
@@ -40,19 +40,19 @@ components:
           description: MongoDB ID
         title:
           type: String
-          description: Vehicle name
+          description: user name
         description:
           type: String
-          description: Vehicle description
+          description: user description
         price:
           type: Number
-          description: Vehicle Price
+          description: user Price
         category:
           type: String
-          description: Category of vehicle
+          description: Category of user
         owner:
           type: String
-          description: Owner of vehicle
+          description: Owner of user
       example:
         _id: 6507f1b39d0d417b0a25c486
         title: Toyota Camry

@@ -55,7 +55,7 @@ const initializatePassport = () => {
             usernameField: 'email'
         },
         async (req, username, password, done) => {
-            const newUser = new UserDTO (req.body)
+            //const newUser = new UserDTO(req.body)
             const {  first_name, last_name, email, age } = req.body;
 
             //Crear rol admin

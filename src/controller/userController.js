@@ -1,13 +1,25 @@
 import {UserService} from '../sevices/userService.js'
 import passport from 'passport';
+import { Cart } from '../sevices/cartService.js';
 
 const US = new UserService();
+const cart = new Cart()
 
 
 const responseError = {
     status: 'error',
     error: 'Something went wrong, try again later'
 };
+// get users
+export const getUsers = async (req, res) => {
+    const result = await US.getUsers()
+    res.send({
+        status: 'success',
+        message: 'Success',
+        payload: result
+    });
+};
+
 
 //github-login
 export const githubLogin = (req, res) => {
@@ -42,7 +54,15 @@ export const login = async (req, res) => {
             cart: req.user.cart
         }
         req.session.loginFailed = false;
-        res.redirect("/views/");
+        res.send({
+            status: 200,
+            message: 'Session found',
+            payload: req.session
+        });
+        /* res.on('finish', ()=> {
+            //redirect to /views
+            res.redirect("/views/login");
+        }) */ 
     }catch(e) {
     console.log(e)
     return res.send(e.message)
@@ -50,7 +70,7 @@ export const login = async (req, res) => {
 }
 
 export const register = (req, res) => {
-    res.redirect("/views/login"); 
+    res.redirect(200, "/views/login"); 
 }
 export const failLogin =(req, res) => {
     req.session.loginFailed = true;
@@ -63,6 +83,47 @@ export const failRegister = (req, res) => {
     console.log('Usuario no registrado');
     res.redirect("/views/register")
 }
+
+export const current = async (req, res) => {
+    try{
+        console.log("holaaa", req.user.session)
+        //req.session.loginFailed = false;
+        return res.send({
+            status: 200,
+            message: 'Session found',
+            payload: req.cookie
+        });
+    }catch(e) {
+    console.log(e)
+    return res.send(e.message)
+    }   
+}
+
+export const deleteUser = async (req, res) => {
+    try{
+        const idParam = req.params.uid;
+        const user = await US.findUser(idParam)
+        const cartDeleted = await cart.deleteCartById(user.cart)
+        if(!cartDeleted){
+            return res.status(400).send({status: "error", error: "cart not found"});
+        }
+        const userDeleted =  await US.deleteUser(user._id)
+        if(!userDeleted){
+            return res.status(400).send({status: "error", error: "user not found"});
+        }
+        return res.send({
+            status: 200,
+            message: 'User and cart deleted',
+            payload: user
+        });
+
+    
+    }catch(e) {
+    console.log(e)
+    return res.send(e.message)
+    }   
+}
+
 ///
 /* export const getBussinessById = async (req, res) => {
     const { bid } = req.params;
@@ -94,7 +155,7 @@ export const addProduct = async (req, res) => {
 
 export const logout = (req, res) => {
     req.session.destroy( error => {
-        if (!error) res.redirect("/views/login");
+        if (!error) res.redirect(200, "/views/login");
         else res.send({status: 'Logout ERROR', body: error});
     });
 }
